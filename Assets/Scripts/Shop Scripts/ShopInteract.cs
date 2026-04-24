@@ -10,8 +10,6 @@ public class ShopInteract : MonoBehaviour
 
     void Start()
     {
-        if (shopUI != null)
-            shopUI.SetActive(false);
         if (interactPrompt != null)
             interactPrompt.SetActive(false);
     }
@@ -20,8 +18,18 @@ public class ShopInteract : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            bool isActive = shopUI.activeSelf;
-            shopUI.SetActive(!isActive);
+            Debug.Log("E pressed, shopUI is " + (shopUI != null ? shopUI.activeSelf.ToString() : "null"));
+            
+            if (shopUI != null)
+            {
+                bool isActive = shopUI.activeSelf;
+                shopUI.SetActive(!isActive);
+                Debug.Log("Shop UI now: " + shopUI.activeSelf);
+                
+                // Hide prompt when shop opens
+                if (interactPrompt != null && !isActive)
+                    interactPrompt.SetActive(false);
+            }
         }
     }
 
@@ -30,8 +38,9 @@ public class ShopInteract : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            if (interactPrompt != null)
+            if (interactPrompt != null && (shopUI == null || !shopUI.activeSelf))
                 interactPrompt.SetActive(true);
+            Debug.Log("Player entered shop trigger. Prompt active: " + (interactPrompt != null && interactPrompt.activeSelf));
         }
     }
 
@@ -44,6 +53,7 @@ public class ShopInteract : MonoBehaviour
                 shopUI.SetActive(false);
             if (interactPrompt != null)
                 interactPrompt.SetActive(false);
+            Debug.Log("Player exited shop trigger. UI closed.");
         }
     }
 }

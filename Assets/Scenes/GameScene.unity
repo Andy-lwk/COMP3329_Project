@@ -1998,7 +1998,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 816640638}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1838521541}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: BuyDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &816640638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2527,7 +2539,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1119660681
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3554,7 +3566,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1714825196}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1838521541}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: BuySpeed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1714825196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3676,7 +3700,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1721078709}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1838521541}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: CloseShop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1721078709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3798,7 +3834,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1723064367}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1838521541}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: BuyHealth
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1723064367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4210,7 +4258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1838521537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4308,9 +4356,6 @@ MonoBehaviour:
   playerStats: {fileID: 866746845}
   playerGold: {fileID: 866746844}
   goldText: {fileID: 228214464}
-  damageText: {fileID: 0}
-  speedText: {fileID: 0}
-  healthText: {fileID: 1793031947}
   damageCost: 30
   damageIncrease: 0.5
   speedCost: 20

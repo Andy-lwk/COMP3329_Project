@@ -9,11 +9,8 @@ public class Shop : MonoBehaviour
     public PlayerStats playerStats;
     public PlayerGold playerGold;
 
-    [Header("UI Text References")]
+    [Header("UI")]
     public TextMeshProUGUI goldText;
-    public TextMeshProUGUI damageText;
-    public TextMeshProUGUI speedText;
-    public TextMeshProUGUI healthText;
 
     [Header("Upgrade Costs & Amounts")]
     public int damageCost = 30;
@@ -31,20 +28,12 @@ public class Shop : MonoBehaviour
             playerStats = FindObjectOfType<PlayerStats>();
         if (playerGold == null)
             playerGold = FindObjectOfType<PlayerGold>();
-
-        gameObject.SetActive(false);
     }
 
     void Update()
     {
         if (goldText != null && playerGold != null)
             goldText.text = "Gold: " + playerGold.gold;
-        if (damageText != null && playerStats != null)
-            damageText.text = "Damage: x" + playerStats.damageMultiplier.ToString("F1");
-        if (speedText != null && playerStats != null)
-            speedText.text = "Speed: x" + playerStats.speedMultiplier.ToString("F1");
-        if (healthText != null && playerStats != null)
-            healthText.text = "Max HP: " + playerStats.TotalMaxHealth;
     }
 
     public void BuyDamage()
@@ -53,12 +42,9 @@ public class Shop : MonoBehaviour
         {
             playerGold.AddGold(-damageCost);
             playerStats.UpgradeDamage(damageIncrease);
-            Debug.Log("Damage upgraded to x" + playerStats.damageMultiplier);
+            Debug.Log("Damage upgraded! Multiplier: " + playerStats.damageMultiplier);
         }
-        else
-        {
-            Debug.Log("Not enough gold for Damage upgrade!");
-        }
+        else Debug.Log("Not enough gold for Damage upgrade!");
     }
 
     public void BuySpeed()
@@ -67,12 +53,9 @@ public class Shop : MonoBehaviour
         {
             playerGold.AddGold(-speedCost);
             playerStats.UpgradeSpeed(speedIncrease);
-            Debug.Log("Speed upgraded to x" + playerStats.speedMultiplier);
+            Debug.Log("Speed upgraded! Multiplier: " + playerStats.speedMultiplier);
         }
-        else
-        {
-            Debug.Log("Not enough gold for Speed upgrade!");
-        }
+        else Debug.Log("Not enough gold for Speed upgrade!");
     }
 
     public void BuyHealth()
@@ -83,10 +66,7 @@ public class Shop : MonoBehaviour
             playerStats.UpgradeMaxHealth(healthIncrease);
             Debug.Log("Max Health increased to " + playerStats.TotalMaxHealth);
         }
-        else
-        {
-            Debug.Log("Not enough gold for Health upgrade!");
-        }
+        else Debug.Log("Not enough gold for Health upgrade!");
     }
 
     public void CloseShop()
