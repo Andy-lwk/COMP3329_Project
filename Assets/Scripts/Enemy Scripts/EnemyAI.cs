@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    public GameObject paperPrefab;
+    protected GameObject paperPrefab;
     public float moveSpeed = 2f;
     public float detectionRange = 5f;
     public float attackRange = 8f;
     public float shootCooldown = 1.5f;
-    private float nextShootTime = 0f;
+    protected float nextShootTime = 0f;
     private bool isAlerted = false;
 
-    private Transform player;
+    protected Transform player;
     private Rigidbody2D rb;
 
     void Start()
@@ -51,7 +51,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    void ShootPaper()
+    protected virtual void ShootPaper()
     {
         Vector2 direction = (player.position - transform.position).normalized;
     

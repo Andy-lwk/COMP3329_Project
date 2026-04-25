@@ -31,16 +31,13 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isInvincible) return;  // Ignore damage if invincible
+        if (isInvincible) return;
 
         currentHealth -= damage;
         Debug.Log("Player took damage! Health: " + currentHealth);
 
         isInvincible = true;
         invincibilityTimer = invincibilityDuration;
-
-        // Optional: make player sprite blink or flash
-        // (you can add a simple coroutine to change alpha)
 
         if (currentHealth <= 0)
         {

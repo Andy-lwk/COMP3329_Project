@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void BossDefeated()
+    {
+        WinGame();
+    }
+
     public void NextLevel()
     {
         currentLevel++;
