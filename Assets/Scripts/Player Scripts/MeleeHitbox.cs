@@ -14,5 +14,11 @@ public class MeleeHitbox : MonoBehaviour
             if (enemy != null)
                 enemy.TakeDamage(damage);
         }
+        else if (other.CompareTag("Boss"))
+        {
+            BossHealth boss = other.GetComponent<BossHealth>();
+            if (boss != null)
+                boss.TakeDamage(damage);
+        }
     }
 }

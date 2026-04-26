@@ -9,15 +9,24 @@ public class BossHealth : MonoBehaviour
     public GameObject goldPrefab;
     public int goldAmount = 50;
     public GameObject doorToUnlock;
+    public BossHealthBar healthBar;
 
     void Start()
     {
         currentHealth = maxHealth;
+        if (healthBar == null)
+            healthBar = FindObjectOfType<BossHealthBar>();
+        if (healthBar != null)
+            healthBar.SetHealth(currentHealth, maxHealth);
     }
 
     public void TakeDamage(int damage)
     {
+        print("Boss takes " + damage + " damage!");
         currentHealth -= damage;
+        if (healthBar != null)
+            healthBar.SetHealth(currentHealth, maxHealth);
+
         if (currentHealth <= 0)
             Die();
     }
@@ -29,6 +38,8 @@ public class BossHealth : MonoBehaviour
             GameObject gold = Instantiate(goldPrefab, transform.position, Quaternion.identity);
             gold.GetComponent<GoldPickup>().value = goldAmount;
         }
+        if (healthBar != null)
+            healthBar.SetHealth(0, maxHealth);
         Destroy(gameObject);
         FindObjectOfType<GameManager>().BossDefeated();
         if (doorToUnlock != null)
