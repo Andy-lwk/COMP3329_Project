@@ -11,7 +11,10 @@ public class BossAI : MonoBehaviour
     public int burstCount = 3;
     public float burstDelay = 0.2f;
     private float nextShootTime = 0f;
+    public float sleepDuration = 1f;
     private bool isAlerted = true;
+    private bool isSleeping = true;
+    private float sleepTimer;
 
     private Transform player;
     private Rigidbody2D rb;
@@ -20,12 +23,30 @@ public class BossAI : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
+        sleepTimer = sleepDuration;
     }
 
     void Update()
     {
         if (player == null) return;
 
+        // ----- Sleep phase -----
+        if (isSleeping)
+        {
+            sleepTimer -= Time.deltaTime;
+            if (sleepTimer <= 0f)
+            {
+                isSleeping = false;
+                // wake-up effect or sound
+            }
+            else
+            {
+                rb.velocity = Vector2.zero;
+                return;
+            }
+        }
+
+        // ----- Normal behavior -----
         Vector2 direction = (player.position - transform.position).normalized;
         rb.velocity = direction * moveSpeed;
 
@@ -36,7 +57,7 @@ public class BossAI : MonoBehaviour
         }
     }
 
-    System.Collections.IEnumerator ShootBurst()
+    IEnumerator ShootBurst()
     {
         for (int i = 0; i < burstCount; i++)
         {
@@ -53,5 +74,10 @@ public class BossAI : MonoBehaviour
         paper.transform.rotation = Quaternion.Euler(0, 0, angle);
         Rigidbody2D rbPaper = paper.GetComponent<Rigidbody2D>();
         if (rbPaper != null) rbPaper.velocity = direction * 8f;
+    }
+
+    public bool IsSleeping()
+    {
+        return isSleeping;
     }
 }

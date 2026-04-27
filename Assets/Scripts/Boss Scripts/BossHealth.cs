@@ -12,11 +12,13 @@ public class BossHealth : MonoBehaviour
     public GameObject healthBarPrefab;
     public BossHealthBar healthBar;
     private BossRoomManager bossRoom;
+    private BossAI bossAI;
 
 
     void Start()
     {
         currentHealth = maxHealth;
+        bossAI = GetComponent<BossAI>();
         if (healthBarPrefab != null)
         {
             GameObject barObj = Instantiate(healthBarPrefab, transform.position, Quaternion.identity);
@@ -44,6 +46,8 @@ public class BossHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (bossAI != null && bossAI.IsSleeping())
+            return;
         print("Boss takes " + damage + " damage!");
         currentHealth -= damage;
         if (healthBar != null)

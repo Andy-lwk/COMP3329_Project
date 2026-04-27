@@ -16,7 +16,10 @@ public class WinScreen : MonoBehaviour
     public void ShowWinScreen()
     {
         if (winPanel != null)
+        {
+            print("Showing win panel...");
             winPanel.SetActive(true);
+        }
         Time.timeScale = 0f;
     }
 

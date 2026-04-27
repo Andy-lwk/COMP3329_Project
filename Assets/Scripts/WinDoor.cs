@@ -11,7 +11,10 @@ public class WinDoor : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             if (winScreen != null)
+            {
+                print("Player reached win door! Showing win screen...");
                 winScreen.ShowWinScreen();
+            }
             else
                 Debug.LogError("WinScreen reference missing on door!");
         }
