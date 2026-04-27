@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 v;
     private Animator anim;
-    private float lastMoveX = 0f;
+    private float lastHorizontal = 1f; 
 
     void Start()
     {
@@ -28,17 +28,15 @@ public class PlayerMovement : MonoBehaviour
         v.y = vertical * speed;
         rb.velocity = v;
 
-        if (Mathf.Abs(horizontal) > 0.1f)
-            lastMoveX = horizontal;
+         if (Mathf.Abs(horizontal) > 0.05f)
+            lastHorizontal = horizontal;
 
-        float animMoveX = (Mathf.Abs(horizontal) > 0.1f) ? horizontal : lastMoveX;
-        anim.SetFloat("MoveX", animMoveX);
+        bool isMoving = Mathf.Abs(horizontal) > 0.05f || Mathf.Abs(vertical) > 0.05f;
 
         if (anim != null)
         {
-            anim.SetFloat("MoveX", horizontal);
-            bool moving = Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f;
-            anim.SetBool("isMoving", moving);
+            anim.SetFloat("FacingX", lastHorizontal);
+            anim.SetBool("isMoving", isMoving);
         }
     }
 }
