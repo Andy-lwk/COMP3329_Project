@@ -17,6 +17,8 @@ public class PlayerAttack : MonoBehaviour
 
     private PlayerStats stats;
 
+    private Animator anim;
+
     void Start()
     {
         currentWeapon = 1;
@@ -25,6 +27,7 @@ public class PlayerAttack : MonoBehaviour
             seatbeltHitbox.SetActive(false);
         }
         stats = GetComponent<PlayerStats>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -66,6 +69,8 @@ public class PlayerAttack : MonoBehaviour
         }
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         briefcase.transform.rotation = Quaternion.Euler(0, 0, angle);
+        if (anim != null)
+            anim.SetTrigger("Throw");
     }
 
     void UseSeatbelt()
@@ -77,6 +82,8 @@ public class PlayerAttack : MonoBehaviour
                 melee.damage = Mathf.RoundToInt(stats.TotalDamage);
             seatbeltHitbox.SetActive(true);
             Invoke(nameof(DisableHitbox), meleeDuration);
+            if (anim != null)
+                anim.SetTrigger("Throw");
         }
     }
 
