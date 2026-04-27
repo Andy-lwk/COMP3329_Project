@@ -8,10 +8,12 @@ public class EnemyHealth : MonoBehaviour
     private int currentHealth;
     public GameObject goldPrefab;
     public int goldAmount = 10;
+    private RoomManager roomManager;
 
     void Start()
     {
         currentHealth = maxHealth;
+        roomManager = GetComponentInParent<RoomManager>();
     }
 
     public void TakeDamage(int damage)
@@ -37,6 +39,8 @@ public class EnemyHealth : MonoBehaviour
             GameObject gold = Instantiate(goldPrefab, transform.position, Quaternion.identity);
             gold.GetComponent<GoldPickup>().value = goldAmount;
         }
+        if (roomManager != null)
+            roomManager.EnemyDied();
         Destroy(gameObject);
     }
 }

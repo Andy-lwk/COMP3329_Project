@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public GameObject seatbeltEffectPrefab;
     public GameObject briefcasePrefab;
     public float projectileSpeed = 20f;
     public float briefcaseFireRate = 0.5f;
@@ -84,6 +85,15 @@ public class PlayerAttack : MonoBehaviour
             Invoke(nameof(DisableHitbox), meleeDuration);
             if (anim != null)
                 anim.SetTrigger("Throw");
+        }
+        if (seatbeltEffectPrefab != null)
+        {
+            GameObject effect = Instantiate(seatbeltEffectPrefab, transform.position, Quaternion.identity);
+            SeatbeltSpin spin = effect.GetComponent<SeatbeltSpin>();
+            if (spin != null)
+                spin.Initialize(transform);
+            else
+                Debug.LogWarning("SeatbeltSpin script missing on prefab");
         }
     }
 

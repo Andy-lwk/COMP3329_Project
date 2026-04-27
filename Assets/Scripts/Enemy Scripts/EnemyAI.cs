@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    protected GameObject paperPrefab;
+    public GameObject paperPrefab;
     public float moveSpeed = 2f;
     public float detectionRange = 5f;
     public float attackRange = 8f;

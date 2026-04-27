@@ -9,15 +9,37 @@ public class BossHealth : MonoBehaviour
     public GameObject goldPrefab;
     public int goldAmount = 50;
     public GameObject doorToUnlock;
+    public GameObject healthBarPrefab;
     public BossHealthBar healthBar;
+    private BossRoomManager bossRoom;
+
 
     void Start()
     {
         currentHealth = maxHealth;
-        if (healthBar == null)
-            healthBar = FindObjectOfType<BossHealthBar>();
-        if (healthBar != null)
-            healthBar.SetHealth(currentHealth, maxHealth);
+        if (healthBarPrefab != null)
+        {
+            GameObject barObj = Instantiate(healthBarPrefab, transform.position, Quaternion.identity);
+            healthBar = barObj.GetComponent<BossHealthBar>();
+            if (healthBar != null)
+            {
+                healthBar.bossTransform = transform;
+                healthBar.SetHealth(currentHealth, maxHealth);
+            }
+        }
+        if (bossRoom == null)
+        {
+            bossRoom = FindObjectOfType<BossRoomManager>();
+            if (bossRoom != null)
+                Debug.Log("BossHealth: Found BossRoomManager via FindObjectOfType");
+            else
+                Debug.LogError("BossHealth: No BossRoomManager found in scene!");
+        }
+    }
+
+    public void SetRoomManager(BossRoomManager manager)
+    {
+        bossRoom = manager;
     }
 
     public void TakeDamage(int damage)
@@ -40,9 +62,12 @@ public class BossHealth : MonoBehaviour
         }
         if (healthBar != null)
             healthBar.SetHealth(0, maxHealth);
+
+        if (bossRoom != null)
+            bossRoom.BossDefeated();
+        else
+            Debug.LogError("BossRoomManager reference missing! Did you set it on spawn?");
+
         Destroy(gameObject);
-        FindObjectOfType<GameManager>().BossDefeated();
-        if (doorToUnlock != null)
-            doorToUnlock.SetActive(false);
     }
 }
