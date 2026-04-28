@@ -11,9 +11,14 @@ public class PlayerHealth : MonoBehaviour
     private float invincibilityTimer = 0f;
     private bool isInvincible = false;
 
+    private GameOverScreen gameOverScreen;
+
     void Start()
     {
         currentHealth = maxHealth;
+        gameOverScreen = FindObjectOfType<GameOverScreen>();
+        if (gameOverScreen == null)
+            Debug.LogWarning("GameOverScreen not found in scene!");
     }
 
     void Update()
@@ -48,9 +53,10 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player died!");
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-        // GameManager.Instance.GameOver();
+        if (gameOverScreen != null)
+            gameOverScreen.ShowGameOver();
+        else
+            Debug.LogError("Cannot show game over – GameOverScreen missing!");
     }
 
     public void Heal(int amount)
