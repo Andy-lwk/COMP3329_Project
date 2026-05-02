@@ -12,18 +12,22 @@ public class BossAI : MonoBehaviour
     public float burstDelay = 0.2f;
     private float nextShootTime = 0f;
     public float sleepDuration = 1f;
+    public float spreadAngle = 45f;
     private bool isAlerted = true;
     private bool isSleeping = true;
     private float sleepTimer;
-
+    public AudioClip shootSound;
+    private AudioSource audioSource;
     private Transform player;
     private Rigidbody2D rb;
+    private bool useSpreadPattern = false;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
         sleepTimer = sleepDuration;
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -50,9 +54,21 @@ public class BossAI : MonoBehaviour
         Vector2 direction = (player.position - transform.position).normalized;
         rb.velocity = direction * moveSpeed;
 
+        if (direction.x != 0)
+        {
+            transform.localScale = new Vector3(Mathf.Sign(direction.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+
         if (Time.time >= nextShootTime)
         {
-            StartCoroutine(ShootBurst());
+            if (useSpreadPattern)
+                ShootSpread();
+            else
+                StartCoroutine(ShootBurst());
+
+            // Switch pattern for next attack
+            useSpreadPattern = !useSpreadPattern;
+
             nextShootTime = Time.time + shootCooldown;
         }
     }
@@ -61,19 +77,50 @@ public class BossAI : MonoBehaviour
     {
         for (int i = 0; i < burstCount; i++)
         {
-            ShootPaper();
+            ShootStraight();
             yield return new WaitForSeconds(burstDelay);
         }
     }
 
-    void ShootPaper()
+    void ShootSpread()
     {
-        Vector2 direction = (player.position - transform.position).normalized;
+        Vector2 baseDirection = (player.position - transform.position).normalized;
+
+        SpawnPaper(baseDirection);
+
+        Vector2 angled1 = RotateVector(baseDirection, spreadAngle);
+        SpawnPaper(angled1);
+
+        Vector2 angled2 = RotateVector(baseDirection, -spreadAngle);
+        SpawnPaper(angled2);
+    }
+
+    void SpawnPaper(Vector2 direction)
+    {
+        if (shootSound != null && audioSource != null)
+            audioSource.PlayOneShot(shootSound);
         GameObject paper = Instantiate(paperPrefab, transform.position, Quaternion.identity);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         paper.transform.rotation = Quaternion.Euler(0, 0, angle);
         Rigidbody2D rbPaper = paper.GetComponent<Rigidbody2D>();
-        if (rbPaper != null) rbPaper.velocity = direction * 8f;
+        if (rbPaper != null)
+            rbPaper.velocity = direction * 8f;
+    }
+
+    void ShootStraight()
+    {
+        if (shootSound != null && audioSource != null)
+            audioSource.PlayOneShot(shootSound);
+        Vector2 direction = (player.position - transform.position).normalized;
+        SpawnPaper(direction);
+    }
+
+    Vector2 RotateVector(Vector2 v, float angleDeg)
+    {
+        float rad = angleDeg * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(rad);
+        float sin = Mathf.Sin(rad);
+        return new Vector2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
     }
 
     public bool IsSleeping()

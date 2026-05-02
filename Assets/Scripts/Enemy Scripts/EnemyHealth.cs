@@ -9,17 +9,19 @@ public class EnemyHealth : MonoBehaviour
     public GameObject goldPrefab;
     public int goldAmount = 10;
     private RoomManager roomManager;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         currentHealth = maxHealth;
         roomManager = GetComponentInParent<RoomManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-
+        StartCoroutine(FlashRed());
         EnemyAI enemyAI = GetComponent<EnemyAI>();
         if (enemyAI != null)
         {
@@ -41,6 +43,34 @@ public class EnemyHealth : MonoBehaviour
         }
         if (roomManager != null)
             roomManager.EnemyDied();
+        
+        StartCoroutine(FadeOutAndDie());
+    }
+
+    IEnumerator FlashRed() {
+        Color original = spriteRenderer.color;
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color = original;
+    }
+
+    IEnumerator FadeOutAndDie()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr == null) yield break;
+
+        float duration = 0.5f;
+        float startAlpha = sr.color.a;
+        Color color = sr.color;
+
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.Lerp(startAlpha, 0f, t / duration);
+            color.a = alpha;
+            sr.color = color;
+            yield return null;
+        }
+
         Destroy(gameObject);
     }
 }

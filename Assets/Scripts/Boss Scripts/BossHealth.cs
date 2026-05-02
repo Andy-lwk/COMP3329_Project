@@ -13,11 +13,12 @@ public class BossHealth : MonoBehaviour
     public BossHealthBar healthBar;
     private BossRoomManager bossRoom;
     private BossAI bossAI;
-
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         currentHealth = maxHealth;
+        spriteRenderer = GetComponent<SpriteRenderer>();
         bossAI = GetComponent<BossAI>();
         if (healthBarPrefab != null)
         {
@@ -53,6 +54,8 @@ public class BossHealth : MonoBehaviour
         if (healthBar != null)
             healthBar.SetHealth(currentHealth, maxHealth);
 
+        StartCoroutine(FlashRed());
+
         if (currentHealth <= 0)
             Die();
     }
@@ -71,6 +74,33 @@ public class BossHealth : MonoBehaviour
             bossRoom.BossDefeated();
         else
             Debug.LogError("BossRoomManager reference missing! Did you set it on spawn?");
+
+        StartCoroutine(FadeOutAndDie());
+    }
+
+    IEnumerator FlashRed() {
+        Color original = spriteRenderer.color;
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color = original;
+    }
+
+    IEnumerator FadeOutAndDie()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr == null) yield break;
+
+        float duration = 0.5f;
+        float startAlpha = sr.color.a;
+        Color color = sr.color;
+
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.Lerp(startAlpha, 0f, t / duration);
+            color.a = alpha;
+            sr.color = color;
+            yield return null;
+        }
 
         Destroy(gameObject);
     }

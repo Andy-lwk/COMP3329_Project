@@ -358,7 +358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 2484871325603607963}
   bossTransform: {fileID: 4022389586718065245, guid: 8e4fd1a211f061b4085ecbabef6fac02, type: 3}
-  offset: {x: 0, y: 1.5, z: 0}
+  offset: {x: 0, y: 3, z: 0}
 --- !u!1 &2484871325981365016
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,9 @@ public class PauseMenu : MonoBehaviour
 
     void Start()
     {
+        if (AudioListener.volume == 0f)
+            AudioListener.volume = 1f;
+            
         if (pausePanel != null)
             pausePanel.SetActive(false);
 

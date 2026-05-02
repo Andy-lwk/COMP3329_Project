@@ -16,6 +16,10 @@ public class PlayerAttack : MonoBehaviour
     private float nextMeleeTime = 0f;
     public int currentWeapon{ get; private set; }
 
+    public AudioClip shootSound;
+    public AudioClip meleeSound;
+    private AudioSource audioSource;
+
     private PlayerStats stats;
 
     private Animator anim;
@@ -29,6 +33,7 @@ public class PlayerAttack : MonoBehaviour
         }
         stats = GetComponent<PlayerStats>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -56,6 +61,8 @@ public class PlayerAttack : MonoBehaviour
 
     void ShootBriefcase()
     {
+        if (shootSound != null && audioSource != null)
+            audioSource.PlayOneShot(shootSound);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f;
         Vector2 direction = (mousePos - transform.position).normalized;
@@ -78,6 +85,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (seatbeltHitbox != null)
         {
+            if (meleeSound != null && audioSource != null)
+                audioSource.PlayOneShot(meleeSound);
             MeleeHitbox melee = seatbeltHitbox.GetComponent<MeleeHitbox>();
             if (melee != null && stats != null)
                 melee.damage = Mathf.RoundToInt(stats.TotalDamage);

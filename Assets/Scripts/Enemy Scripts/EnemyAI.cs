@@ -11,7 +11,8 @@ public class EnemyAI : MonoBehaviour
     public float shootCooldown = 1.5f;
     protected float nextShootTime = 0f;
     private bool isAlerted = false;
-
+    public AudioClip shootSound;
+    private AudioSource audioSource;
     protected Transform player;
     private Rigidbody2D rb;
 
@@ -19,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -40,9 +42,16 @@ public class EnemyAI : MonoBehaviour
         }
         
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
         Vector2 direction = (player.position - transform.position).normalized;
-        rb.velocity = direction * moveSpeed;
+        if (distanceToPlayer > 0.5f)
+            rb.velocity = direction * moveSpeed;
+        else
+            rb.velocity = Vector2.zero;
+
+        if (direction.x != 0)
+        {
+            transform.localScale = new Vector3(Mathf.Sign(direction.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
 
         if (distanceToPlayer <= attackRange && Time.time >= nextShootTime)
         {
@@ -53,6 +62,9 @@ public class EnemyAI : MonoBehaviour
 
     protected virtual void ShootPaper()
     {
+        if (shootSound != null && audioSource != null)
+            audioSource.PlayOneShot(shootSound);
+
         Vector2 direction = (player.position - transform.position).normalized;
     
         GameObject paper = Instantiate(paperPrefab, transform.position, Quaternion.identity);
